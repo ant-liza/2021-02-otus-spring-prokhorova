@@ -13,22 +13,7 @@ public class Main {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
         TestService service = context.getBean(TestService.class);
         ExamTest test = service.loadTest();
-        printTestQuestions(test);
-    }
-
-    private static void printTestQuestions(ExamTest examTest) {
-        for (Question question : examTest.getListOfQuestions()) {
-            System.out.println(question.getQuestionDescription());
-            StringBuilder sb = new StringBuilder();
-            for (AnswerOption answerOptionObj : question.getListOfOptions()) {
-                sb.append(answerOptionObj.getOrderNumber())
-                        .append(")")
-                        .append(answerOptionObj.getDescription())
-                        .append('\n');
-
-            }
-            System.out.println(sb.toString());
-        }
+        test.showQuestions();
     }
 
 }

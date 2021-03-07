@@ -88,4 +88,19 @@ public class ExamTest {
         return source;
     }
 
+    public void showQuestions() {
+        for (Question question : this.getListOfQuestions()) {
+            System.out.println(question.getQuestionDescription());
+            StringBuilder sb = new StringBuilder();
+            for (AnswerOption answerOptionObj : question.getListOfOptions()) {
+                sb.append(answerOptionObj.getOrderNumber())
+                        .append(")")
+                        .append(answerOptionObj.getDescription())
+                        .append('\n');
+            }
+            System.out.println(sb.toString());
+        }
+    }
+
+
 }
