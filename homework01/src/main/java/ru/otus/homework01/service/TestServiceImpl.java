@@ -3,6 +3,7 @@ package ru.otus.homework01.service;
 import ru.otus.homework01.dao.TestDao;
 import ru.otus.homework01.domain.ExamTest;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 public class TestServiceImpl implements TestService {
@@ -14,7 +15,8 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public ExamTest loadTest() throws IOException {
-        return dao.getTestFromDefaultSource();
+        BufferedReader reader = dao.getReaderFromDefaultSource();
+        return dao.getTest(reader);
     }
 
 
