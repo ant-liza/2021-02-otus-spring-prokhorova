@@ -3,6 +3,7 @@ package ru.otus.homework01.domain;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Question {
 
@@ -44,6 +45,19 @@ public class Question {
             }
         }
         return correctNum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return questionId == question.questionId ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(questionId, questionDescription, correctAnswer);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ru.otus.homework01.dao;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import ru.otus.homework01.domain.AnswerOption;
 import ru.otus.homework01.domain.ExamTest;
 import ru.otus.homework01.domain.Question;
@@ -11,20 +13,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TestDaoImpl implements TestDao {
-    private final String defaultSource;
+    @Value("${questions.file}")
+    private String sourceCSV;
 
-    public TestDaoImpl(String defaultSource) {
-        this.defaultSource = defaultSource;
-    }
-
-
-    @Override
-    public BufferedReader getReaderFromDefaultSource() {
+    public BufferedReader getReaderFromSource(String source) {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(defaultSource);
+        InputStream inputStream = classLoader.getResourceAsStream(source);
         if (inputStream == null) {
-            throw new IllegalArgumentException("File not found! " + defaultSource);
+            throw new IllegalArgumentException("File not found! " + source);
         } else {
             InputStreamReader streamReader = new InputStreamReader(inputStream);
             return new BufferedReader(streamReader);
@@ -32,9 +30,10 @@ public class TestDaoImpl implements TestDao {
     }
 
     @Override
-    public ExamTest getTest(BufferedReader reader) throws IOException {
+    public ExamTest getTest() throws IOException {
         ExamTest examTest = new ExamTest();
         List<Question> questions = new ArrayList<>();
+        BufferedReader reader = getReaderFromSource(sourceCSV);
         String line = reader.readLine();//пропускаем 1-ю строку с наименованием столбцов
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
             String[] fields = line.split(";");
