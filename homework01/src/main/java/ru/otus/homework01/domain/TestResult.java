@@ -2,15 +2,23 @@ package ru.otus.homework01.domain;
 
 import java.util.List;
 
+/**
+ * Класс для хранения результатов тестирования:
+ * студент, ответы студента на вопросы, кол-во вопросов теста,
+ * кол-во правильных ответов студента
+ */
 public class TestResult {
-    Student student;
-    int numberOfCorrectAnswers;
-    List<StudentAnswer> studentAnswers;
-    int numberOfQuestions;
+    private Student student;
+    private int numberOfCorrectAnswers;
+    private List<StudentAnswer> studentAnswers;
+    private int numberOfQuestions;
 
-    public TestResult(Student student,  List<StudentAnswer> studentAnswers) {
+    public TestResult(Student student, List<StudentAnswer> studentAnswers) {
         this.student = student;
         this.studentAnswers = studentAnswers;
+    }
+
+    public TestResult() {
     }
 
     public void setNumberOfQuestions(int numberOfQuestions) {

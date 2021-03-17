@@ -1,8 +1,8 @@
 package ru.otus.homework01.domain;
 
 public class Student {
-    String firstName;
-    String lastName;
+    private final String firstName;
+    private final String lastName;
 
     public Student(String firstName, String lastName) {
         this.firstName = firstName;

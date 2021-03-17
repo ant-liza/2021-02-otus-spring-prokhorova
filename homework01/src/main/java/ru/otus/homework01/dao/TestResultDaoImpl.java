@@ -9,6 +9,6 @@ public class TestResultDaoImpl implements TestResultDao {
 
     @Override
     public TestResult getNewTestResult() {
-        return new TestResult(null,null);
+        return new TestResult();
     }
 }

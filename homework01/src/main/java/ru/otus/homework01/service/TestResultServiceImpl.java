@@ -2,7 +2,12 @@ package ru.otus.homework01.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.homework01.dao.TestResultDao;
+import ru.otus.homework01.domain.ExamTest;
+import ru.otus.homework01.domain.Question;
+import ru.otus.homework01.domain.StudentAnswer;
 import ru.otus.homework01.domain.TestResult;
+
+import java.util.List;
 
 @Service
 public class TestResultServiceImpl implements TestResultService {
@@ -17,6 +22,7 @@ public class TestResultServiceImpl implements TestResultService {
         return dao.getNewTestResult();
     }
 
+    @Override
     public void showResults(TestResult testResult) {
         System.out.println("Результаты теста:");
         System.out.println("Имя и фамилия: " + testResult.getStudentInfo());
@@ -27,7 +33,8 @@ public class TestResultServiceImpl implements TestResultService {
 
     }
 
-    private int calculateMark(TestResult testResult) {
+    @Override
+    public int calculateMark(TestResult testResult) {
         int numberOfCorrectAnswers = testResult.getNumberOfCorrectAnswers();
         int mark;
         switch (numberOfCorrectAnswers) {
@@ -45,5 +52,18 @@ public class TestResultServiceImpl implements TestResultService {
                 break;
         }
         return mark;
+    }
+    public int getStudentCorrectAnswers(ExamTest exam, List<StudentAnswer> studentAnswers) {
+        int numberOfCorrectAnswers = 0;
+        for (Question question : exam.getListOfQuestions()) {
+            for (StudentAnswer studentAnswer : studentAnswers) {
+                if (question.equals(studentAnswer.getQuestion())) {
+                    if (question.getNumOfCorrectAnswer() == studentAnswer.getStudentAnswer()) {
+                        numberOfCorrectAnswers++;
+                    }
+                }
+            }
+        }
+        return numberOfCorrectAnswers;
     }
 }
