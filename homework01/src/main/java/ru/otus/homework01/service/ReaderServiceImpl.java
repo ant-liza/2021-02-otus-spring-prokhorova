@@ -1,6 +1,7 @@
 package ru.otus.homework01.service;
 
 import org.springframework.stereotype.Service;
+import ru.otus.homework01.bean.InOutEnvelope;
 import ru.otus.homework01.dao.TestDao;
 import ru.otus.homework01.domain.*;
 
