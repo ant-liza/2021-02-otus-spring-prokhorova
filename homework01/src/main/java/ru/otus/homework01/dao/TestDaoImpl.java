@@ -1,42 +1,29 @@
 package ru.otus.homework01.dao;
 
+import org.springframework.stereotype.Component;
 import ru.otus.homework01.domain.AnswerOption;
+import ru.otus.homework01.domain.CSVReaderEnvelop;
 import ru.otus.homework01.domain.ExamTest;
 import ru.otus.homework01.domain.Question;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TestDaoImpl implements TestDao {
-    private final String defaultSource;
+    private final CSVReaderEnvelop csvReaderEnvelop;
 
-    public TestDaoImpl(String defaultSource) {
-        this.defaultSource = defaultSource;
-    }
-
-
-    @Override
-    public BufferedReader getReaderFromDefaultSource() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(defaultSource);
-        if (inputStream == null) {
-            throw new IllegalArgumentException("File not found! " + defaultSource);
-        } else {
-            InputStreamReader streamReader = new InputStreamReader(inputStream);
-            return new BufferedReader(streamReader);
-        }
+    public TestDaoImpl(CSVReaderEnvelop csvReaderEnvelop) {
+        this.csvReaderEnvelop = csvReaderEnvelop;
     }
 
     @Override
-    public ExamTest getTest(BufferedReader reader) throws IOException {
+    public ExamTest getTest() throws IOException {
         ExamTest examTest = new ExamTest();
         List<Question> questions = new ArrayList<>();
-        String line = reader.readLine();//пропускаем 1-ю строку с наименованием столбцов
-        while ((line = reader.readLine()) != null && !line.isEmpty()) {
+        String line = csvReaderEnvelop.getReader().readLine();//пропускаем 1-ю строку с наименованием столбцов
+        while ((line = csvReaderEnvelop.getReader().readLine()) != null && !line.isEmpty()) {
             String[] fields = line.split(";");
             String questionId = fields[0];
             String questionDescription = fields[1];
@@ -60,7 +47,7 @@ public class TestDaoImpl implements TestDao {
             Question question = new Question(Integer.parseInt(questionId), questionDescription, ansOpList, correctAnswer);
             questions.add(question);
         }
-        reader.close();
+        csvReaderEnvelop.getReader().close();
         examTest.setListOfQuestions(questions);
         examTest.setName("Test # 1");
         return examTest;

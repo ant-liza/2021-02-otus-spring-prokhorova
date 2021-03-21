@@ -1,23 +1,15 @@
 package ru.otus.homework01.service;
 
-import ru.otus.homework01.dao.TestDao;
-import ru.otus.homework01.domain.ExamTest;
+import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
+@Service
 public class TestServiceImpl implements TestService {
-    private final TestDao dao;
+    private final ReaderService readerService;
 
-    public TestServiceImpl(TestDao dao) {
-        this.dao = dao;
+    public TestServiceImpl(ReaderService readerService) throws IOException{
+        this.readerService = readerService;
     }
-
-    @Override
-    public ExamTest loadTest() throws IOException {
-        BufferedReader reader = dao.getReaderFromDefaultSource();
-        return dao.getTest(reader);
-    }
-
 
 }
