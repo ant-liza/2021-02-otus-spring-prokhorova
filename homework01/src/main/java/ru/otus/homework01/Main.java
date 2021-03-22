@@ -1,17 +1,13 @@
 package ru.otus.homework01;
 
-import org.springframework.context.annotation.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.IOException;
-import java.util.Scanner;
-
-@ComponentScan
-@Configuration
-@PropertySource("classpath:application.properties")
+@SpringBootApplication
 public class Main {
-    public static void main(String[] args) throws IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(Main.class);
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
     }
+
 
 }

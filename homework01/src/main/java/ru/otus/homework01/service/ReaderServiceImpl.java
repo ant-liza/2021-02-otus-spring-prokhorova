@@ -1,6 +1,8 @@
 package ru.otus.homework01.service;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.homework01.bean.CustomLocaleEnvelope;
 import ru.otus.homework01.bean.InOutEnvelope;
 import ru.otus.homework01.dao.TestDao;
 import ru.otus.homework01.domain.*;
@@ -14,13 +16,19 @@ public class ReaderServiceImpl implements ReaderService {
     private final TestDao testDao;//источник данных
     private final TestResultService testResultService;//сервис для хранения результатов input'ов
     private final InOutEnvelope inOutEnvelope;
+    private final CustomLocaleEnvelope customLocaleEnvelope;
+    private final MessageSource messageSource;
 
     public ReaderServiceImpl(TestDao testDao,
                              TestResultService testResultService,
-                             InOutEnvelope inOutEnvelope) throws IOException {
+                             InOutEnvelope inOutEnvelope,
+                             CustomLocaleEnvelope customLocaleEnvelope,
+                             MessageSource messageSource) throws IOException {
         this.testDao = testDao;
         this.testResultService = testResultService;
         this.inOutEnvelope = inOutEnvelope;
+        this.customLocaleEnvelope = customLocaleEnvelope;
+        this.messageSource = messageSource;
         startReadExam();
     }
 
@@ -40,7 +48,8 @@ public class ReaderServiceImpl implements ReaderService {
                     .append('\n');
         }
         inOutEnvelope.getOut().println(sb.toString());
-        inOutEnvelope.getOut().println("Введите ответ (1-4): ");
+        inOutEnvelope.getOut().println(messageSource.getMessage("enter.answer",
+                null, customLocaleEnvelope.getDefaultLocale()));
     }
 
 
@@ -53,10 +62,12 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     private void startReadExam() throws IOException {
-        showCustomRow("Введите имя");
+        showCustomRow(messageSource.getMessage("enter.first-name",
+                null, customLocaleEnvelope.getDefaultLocale()));
         checkStringInput();
         String firstName = readRowStr();
-        showCustomRow("Введите фамилию");
+        showCustomRow(messageSource.getMessage("enter.last-name",
+                null, customLocaleEnvelope.getDefaultLocale()));
         checkStringInput();
         String lastName = readRowStr();
         Student student = new Student(firstName, lastName);
@@ -80,14 +91,18 @@ public class ReaderServiceImpl implements ReaderService {
     private void checkStringInput() {
         String pattern = "[а-яА-Яa-zA-Z]+";
         while (!inOutEnvelope.getScanner().hasNext(pattern)) {
-            inOutEnvelope.getOut().println("Введите строковое значение");
+            inOutEnvelope.getOut().println(messageSource.getMessage(
+                    "enter.string-value", null,
+                    customLocaleEnvelope.getDefaultLocale()));
             inOutEnvelope.getScanner().nextLine();
         }
     }
 
     private void checkIntInput() {
         while (!inOutEnvelope.getScanner().hasNextInt()) {
-            inOutEnvelope.getOut().println("Введите число от 1 до 4");
+            inOutEnvelope.getOut().println(messageSource.getMessage(
+                    "enter.int-value", null,
+                    customLocaleEnvelope.getDefaultLocale()));
             inOutEnvelope.getScanner().next();
         }
     }

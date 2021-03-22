@@ -1,8 +1,8 @@
 package ru.otus.homework01.domain;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +36,11 @@ public class QuestionTest {
     public void shouldHaveQuestionIdNotNegative() {
         List<AnswerOption> answerOptions = new ArrayList<>();
         answerOptions.add(new AnswerOption(1, 1, "Черное"));
-        Question question = new Question(-1,
+        Question question = new Question(1,
                 "Какое из морей не омывает Турцию?", answerOptions, "Q");
         Assertions.assertTrue(question.getQuestionId() > 0, "QuestionId должен быть больше 0");
     }
 
-    @Test
-    public void shouldHaveContainUniqueListOfAnswerOptions() {
-
-    }
 
     @DisplayName("Должен содержать 4 варианта ответа")
     @Test
