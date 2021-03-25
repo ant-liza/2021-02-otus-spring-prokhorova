@@ -1,7 +1,9 @@
 package ru.otus.homework01.bean;
 
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CustomMessageSourceEnvelop {
     private final MessageSource messageSource;
     private final CustomLocaleEnvelope localeEnvelope;
