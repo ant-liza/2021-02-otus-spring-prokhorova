@@ -1,4 +1,4 @@
-package ru.otus.homework01.domain;
+package ru.otus.homework01.bean;
 
 import org.springframework.stereotype.Component;
 

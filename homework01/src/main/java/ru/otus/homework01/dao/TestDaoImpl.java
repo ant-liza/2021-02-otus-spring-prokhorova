@@ -2,7 +2,7 @@ package ru.otus.homework01.dao;
 
 import org.springframework.stereotype.Component;
 import ru.otus.homework01.domain.AnswerOption;
-import ru.otus.homework01.domain.CSVReaderEnvelop;
+import ru.otus.homework01.bean.CSVReaderEnvelope;
 import ru.otus.homework01.domain.ExamTest;
 import ru.otus.homework01.domain.Question;
 
@@ -12,18 +12,18 @@ import java.util.List;
 
 @Component
 public class TestDaoImpl implements TestDao {
-    private final CSVReaderEnvelop csvReaderEnvelop;
+    private final CSVReaderEnvelope csvReaderEnvelope;
 
-    public TestDaoImpl(CSVReaderEnvelop csvReaderEnvelop) {
-        this.csvReaderEnvelop = csvReaderEnvelop;
+    public TestDaoImpl(CSVReaderEnvelope csvReaderEnvelop) {
+        this.csvReaderEnvelope = csvReaderEnvelop;
     }
 
     @Override
     public ExamTest getTest() throws IOException {
         ExamTest examTest = new ExamTest();
         List<Question> questions = new ArrayList<>();
-        String line = csvReaderEnvelop.getReader().readLine();//пропускаем 1-ю строку с наименованием столбцов
-        while ((line = csvReaderEnvelop.getReader().readLine()) != null && !line.isEmpty()) {
+        String line = csvReaderEnvelope.getReader().readLine();//пропускаем 1-ю строку с наименованием столбцов
+        while ((line = csvReaderEnvelope.getReader().readLine()) != null && !line.isEmpty()) {
             String[] fields = line.split(";");
             String questionId = fields[0];
             String questionDescription = fields[1];
@@ -47,7 +47,7 @@ public class TestDaoImpl implements TestDao {
             Question question = new Question(Integer.parseInt(questionId), questionDescription, ansOpList, correctAnswer);
             questions.add(question);
         }
-        csvReaderEnvelop.getReader().close();
+        csvReaderEnvelope.getReader().close();
         examTest.setListOfQuestions(questions);
         examTest.setName("Test # 1");
         return examTest;

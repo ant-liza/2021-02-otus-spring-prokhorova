@@ -1,6 +1,8 @@
 package ru.otus.homework01.service;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.homework01.bean.CustomLocaleEnvelope;
 import ru.otus.homework01.dao.TestResultDao;
 import ru.otus.homework01.domain.ExamTest;
 import ru.otus.homework01.domain.Question;
@@ -12,9 +14,15 @@ import java.util.List;
 @Service
 public class TestResultServiceImpl implements TestResultService {
     private final TestResultDao dao;
+    private final CustomLocaleEnvelope customLocaleEnvelope;
+    private final MessageSource messageSource;
 
-    public TestResultServiceImpl(TestResultDao dao) {
+    public TestResultServiceImpl(TestResultDao dao,
+                                 CustomLocaleEnvelope customLocaleEnvelope,
+                                 MessageSource messageSource) {
+        this.customLocaleEnvelope = customLocaleEnvelope;
         this.dao = dao;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -24,12 +32,19 @@ public class TestResultServiceImpl implements TestResultService {
 
     @Override
     public void showResults(TestResult testResult) {
-        System.out.println("Результаты теста:");
-        System.out.println("Имя и фамилия: " + testResult.getStudentInfo());
-        System.out.println("Всего вопросов/Количество правильных ответов : " +
-                testResult.getNumberOfQuestions()
-                + "/" + testResult.getNumberOfCorrectAnswers());
-        System.out.println("Оценка : " + calculateMark(testResult));
+        System.out.println(messageSource.getMessage("test.results",null,
+                customLocaleEnvelope.getDefaultLocale()));
+        System.out.println(messageSource.getMessage("test.full-name",new String[]{
+                        testResult.getStudent().getFirstName(),
+                        testResult.getStudent().getLastName()},
+                customLocaleEnvelope.getDefaultLocale()));
+        System.out.println(messageSource.getMessage("test.count-questions-and-answers",
+                new String[]{Integer.toString(testResult.getNumberOfQuestions()),
+                        Integer.toString(testResult.getNumberOfCorrectAnswers())},
+                customLocaleEnvelope.getDefaultLocale()));
+        System.out.println(messageSource.getMessage("test.mark",
+                new String[]{Integer.toString(calculateMark(testResult))},
+                customLocaleEnvelope.getDefaultLocale()));
 
     }
 

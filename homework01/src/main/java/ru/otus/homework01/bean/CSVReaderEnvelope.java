@@ -1,6 +1,5 @@
-package ru.otus.homework01.domain;
+package ru.otus.homework01.bean;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -8,14 +7,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 @Component
-public class CSVReaderEnvelop {
+public class CSVReaderEnvelope {
     private final BufferedReader reader;
 
-    public CSVReaderEnvelop(@Value("${questions.file}")String sourceCSV) {
+    public CSVReaderEnvelope(CustomFilePathFinder fileFinder) {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(sourceCSV);
+        InputStream inputStream = classLoader.getResourceAsStream(fileFinder.getPathToFile());
         if (inputStream == null) {
-            throw new IllegalArgumentException("File not found! " + sourceCSV);
+            throw new IllegalArgumentException("File not found! " + fileFinder.getPathToFile());
         } else {
             InputStreamReader streamReader = new InputStreamReader(inputStream);
             reader = new BufferedReader(streamReader);
