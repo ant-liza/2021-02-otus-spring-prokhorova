@@ -1,6 +1,7 @@
 package ru.otus.homework01.bean;
 
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component

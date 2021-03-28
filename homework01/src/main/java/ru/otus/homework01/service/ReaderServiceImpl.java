@@ -3,30 +3,18 @@ package ru.otus.homework01.service;
 import org.springframework.stereotype.Service;
 import ru.otus.homework01.bean.CustomMessageSourceEnvelop;
 import ru.otus.homework01.bean.InOutEnvelope;
-import ru.otus.homework01.dao.TestDao;
-import ru.otus.homework01.domain.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import ru.otus.homework01.domain.AnswerOption;
+import ru.otus.homework01.domain.Question;
 
 @Service
 public class ReaderServiceImpl implements ReaderService {
-    private final TestDao testDao;//источник данных
-    private final TestResultService testResultService;//сервис для хранения результатов input'ов
     private final InOutEnvelope inOutEnvelope;
     private final CustomMessageSourceEnvelop customMessageSourceEnvelop;
 
-    public ReaderServiceImpl(TestDao testDao,
-                             TestResultService testResultService,
-                             InOutEnvelope inOutEnvelope,
-                             CustomMessageSourceEnvelop customMessageSourceEnvelop)
-            throws IOException {
-        this.testDao = testDao;
-        this.testResultService = testResultService;
+    public ReaderServiceImpl(InOutEnvelope inOutEnvelope,
+                             CustomMessageSourceEnvelop customMessageSourceEnvelop) {
         this.inOutEnvelope = inOutEnvelope;
         this.customMessageSourceEnvelop = customMessageSourceEnvelop;
-        startReadExam();
     }
 
     @Override
@@ -35,7 +23,7 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
 
-    private void showQuestionRow(Question question) {
+    public void showQuestionRow(Question question) {
         StringBuilder sb = new StringBuilder();
         inOutEnvelope.getOut().println(question.getQuestionDescription());
         for (AnswerOption answerOptionObj : question.getListOfOptions()) {
@@ -50,37 +38,15 @@ public class ReaderServiceImpl implements ReaderService {
 
 
     public String readRowStr() {
+        checkStringInput();
         return inOutEnvelope.getScanner().nextLine();
     }
 
     public int readRowInt() {
+        checkIntInput();
         return inOutEnvelope.getScanner().nextInt();
     }
 
-    private void startReadExam() throws IOException {
-        showCustomRow(customMessageSourceEnvelop.getMessage("enter.first-name"));
-        checkStringInput();
-        String firstName = readRowStr();
-        showCustomRow(customMessageSourceEnvelop.getMessage("enter.last-name"));
-        checkStringInput();
-        String lastName = readRowStr();
-        Student student = new Student(firstName, lastName);
-        List<StudentAnswer> studentAnswers = new ArrayList<>();
-        ExamTest examTest = testDao.getTest();
-        for (Question question : examTest.getListOfQuestions()) {
-            showQuestionRow(question);
-            checkIntInput();
-            int chosenOption = readRowInt();
-            studentAnswers.add(new StudentAnswer(question, chosenOption));
-        }
-        inOutEnvelope.getScanner().close();
-        TestResult result = testResultService.getEmptyTestResult();
-        result.setStudent(student);
-        result.setNumberOfQuestions(examTest.getListOfQuestions().size());
-        result.setStudentAnswers(studentAnswers);
-        result.setNumberOfCorrectAnswers(testResultService.getStudentCorrectAnswers(examTest, studentAnswers));
-        testResultService.showResults(result);
-    }
 
     private void checkStringInput() {
         String pattern = "[а-яА-Яa-zA-Z]+";
