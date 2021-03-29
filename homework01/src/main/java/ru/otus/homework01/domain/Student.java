@@ -1,13 +1,15 @@
 package ru.otus.homework01.domain;
 
 public class Student {
-    private final String firstName;
-    private final String lastName;
+    private  String firstName;
+    private  String lastName;
 
     public Student(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public Student(){}
 
     public String getFirstName() {
         return firstName;
@@ -15,5 +17,13 @@ public class Student {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
