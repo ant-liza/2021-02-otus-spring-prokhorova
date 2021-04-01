@@ -2,22 +2,12 @@ package ru.otus.books;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import ru.otus.books.dao.AuthorDao;
-import ru.otus.books.dao.BookCategoryDao;
-import ru.otus.books.dao.BookDao;
-import ru.otus.books.domain.Author;
-import ru.otus.books.domain.Book;
-import ru.otus.books.domain.BookCategory;
-import ru.otus.books.service.BookCategoryDaoJdbc;
-
-import java.util.List;
 
 @SpringBootApplication
 public class BooksApplication {
 
 	public static void main(String[] args) throws Exception {
-		ApplicationContext context = SpringApplication.run(BooksApplication.class, args);
+		 SpringApplication.run(BooksApplication.class, args);
 
 		/*AuthorDao authorDao = context.getBean(AuthorDao.class);
 		System.out.println(" author count = " + authorDao.count());
