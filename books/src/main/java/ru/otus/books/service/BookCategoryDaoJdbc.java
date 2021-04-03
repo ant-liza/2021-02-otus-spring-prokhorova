@@ -42,7 +42,7 @@ public class BookCategoryDaoJdbc implements BookCategoryDao {
     @Override
     public List<BookCategory> getAll() {
         return namedParameterJdbcOperations.query(
-                "select * from BOOK_CATEGORIES", new BookCategoryMapper());
+                "select BOOK_CATEGORY_ID,BOOK_CATEGORY_NAME from BOOK_CATEGORIES", new BookCategoryMapper());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BookCategoryDaoJdbc implements BookCategoryDao {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", bookCategoryId);
         return namedParameterJdbcOperations.queryForObject(
-                "select * from BOOK_CATEGORIES where BOOK_CATEGORY_ID =:id",
+                "select BOOK_CATEGORY_ID,BOOK_CATEGORY_NAME from BOOK_CATEGORIES where BOOK_CATEGORY_ID =:id",
                 params, new BookCategoryMapper());
 
     }
