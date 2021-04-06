@@ -1,11 +1,13 @@
 package ru.otus.books.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class BookCategory {
-private  final long bookCategoryId;
-private final String bookCategoryName;
+    private long bookCategoryId;
+    private String bookCategoryName;
 }

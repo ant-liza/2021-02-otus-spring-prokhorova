@@ -9,7 +9,7 @@ public interface AuthorDao {
 
     long insert(Author author);// create
 
-    List<Author> getAll();//read
+    List<Author> getAllAuthors();//read
 
     Author getById(long authorId);//read
 
@@ -18,4 +18,7 @@ public interface AuthorDao {
     void deleteById(long authorId);//delete
 
     long getMaxId();
+
+    List<Author> findAllAuthorsWithBooks() ;
+
 }

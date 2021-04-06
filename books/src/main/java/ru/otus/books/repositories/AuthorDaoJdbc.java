@@ -1,5 +1,6 @@
-package ru.otus.books.service;
+package ru.otus.books.repositories;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -7,19 +8,23 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.books.dao.AuthorDao;
+import ru.otus.books.dao.BookDao;
 import ru.otus.books.domain.Author;
+import ru.otus.books.domain.Book;
+import ru.otus.books.repositories.relations.AuthorBookRelation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor
 public class AuthorDaoJdbc implements AuthorDao {
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
-
-    public AuthorDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
-        this.namedParameterJdbcOperations = namedParameterJdbcOperations;
-    }
+    private final BookDao bookDao;
 
     @Override
     public int count() {
@@ -42,7 +47,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public List<Author> getAll() {
+    public List<Author> getAllAuthors() {
         return namedParameterJdbcOperations.query(
                 "select author_id, firstName, lastName, nickName from authors",
                 new AuthorMapper());
@@ -54,7 +59,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         params.addValue("id", authorId);
         return namedParameterJdbcOperations.queryForObject(
                 "select author_id, firstName, lastName, nickName from authors " +
-                " where author_id=:id", params, new AuthorMapper());
+                        " where author_id=:id", params, new AuthorMapper());
     }
 
     @Override
@@ -79,6 +84,37 @@ public class AuthorDaoJdbc implements AuthorDao {
                 queryForObject("select max(AUTHOR_ID) from authors", Integer.class);
     }
 
+
+    @Override
+    public List<Author> findAllAuthorsWithBooks() {
+        List<Book> books = bookDao.getAllBooks();
+        List<AuthorBookRelation> relations = getAllRelations();
+        List<Author> authors = getAllAuthors();
+        mergeAuthorsAndBooks(authors, books, relations);
+        return authors;
+    }
+
+    private List<AuthorBookRelation> getAllRelations() {
+        return namedParameterJdbcOperations.query(
+                "select author_id, book_id from AUTHOR_BOOKS_RELATION",
+                (rs, i) -> new AuthorBookRelation(
+                        rs.getLong("author_id"),
+                        rs.getLong("book_id")));
+    }
+
+    private void mergeAuthorsAndBooks(List<Author> authors,
+                                      List<Book> books,
+                                      List<AuthorBookRelation> relations) {
+        Map<Long, Author> authorMap = authors.stream().collect(Collectors.toMap(Author::getAuthorId, a -> a));
+        Map<Long, Book> booksMap = books.stream().collect(Collectors.toMap(Book::getBookId, b -> b));
+        relations.stream().forEach(rel -> {
+            if (authorMap.containsKey(rel.getAuthorId()) &&
+                    booksMap.containsKey(rel.getBookId())) {
+                authorMap.get(rel.getAuthorId()).getBooks().add(booksMap.get(rel.getBookId()));
+            }
+        });
+    }
+
     private static class AuthorMapper implements RowMapper<Author> {
 
         @Override
@@ -87,7 +123,7 @@ public class AuthorDaoJdbc implements AuthorDao {
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
             String nickName = resultSet.getString("nickName");
-            return new Author(authorId, firstName, lastName, nickName);
+            return new Author(authorId, firstName, lastName, nickName, new ArrayList<>());
         }
     }
 }

@@ -9,7 +9,7 @@ public interface BookDao {
 
     long insert(Book book);// create
 
-    List<Book> getAll();//read
+    List<Book> getAllBooks();//read
 
     Book getById(long bookId);//read
 

@@ -1,4 +1,4 @@
-package ru.otus.books.service;
+package ru.otus.books.repositories;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

@@ -1,4 +1,4 @@
-package ru.otus.books.service;
+package ru.otus.books.repositories;
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
