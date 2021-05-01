@@ -3,8 +3,6 @@ package ru.otus.books.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -29,8 +27,7 @@ public class Author {
     @Column(name = "NICKNAME")
     private String nickName;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(targetEntity = Book.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+    @OneToMany(targetEntity = Book.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY,
             orphanRemoval = true)//при удалении книги удаляем ее из БД, т.к. книга без автора не нужна
     @JoinColumn(name = "author_id")
     private List<Book> books;

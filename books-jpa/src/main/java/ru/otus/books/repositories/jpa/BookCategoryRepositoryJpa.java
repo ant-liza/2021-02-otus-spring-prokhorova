@@ -1,20 +1,12 @@
 package ru.otus.books.repositories.jpa;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.books.models.BookCategory;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface BookCategoryRepositoryJpa {
-    long count();
+public interface BookCategoryRepositoryJpa extends JpaRepository<BookCategory, Long> {
 
-    BookCategory save(BookCategory bc);
+    Optional<BookCategory> findByBookCategoryName(String value);
 
-    List<BookCategory> findAll();
-
-    Optional<BookCategory> findById(long id);
-
-    void delete(BookCategory bc);
-
-    void updateTitle(BookCategory bc, String title);
 }

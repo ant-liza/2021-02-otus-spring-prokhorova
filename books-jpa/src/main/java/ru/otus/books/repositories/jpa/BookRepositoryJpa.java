@@ -1,21 +1,17 @@
 package ru.otus.books.repositories.jpa;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.otus.books.models.Book;
+
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface BookRepositoryJpa {
-    long count();
+public interface BookRepositoryJpa extends JpaRepository<Book, Long> {
 
-    Book save(Book book);
+    @Query("select b from Author a join a.books b where a.authorId=:id")
+    List<Book> getAllBooksByAuthor(@Param("id") long authorId);
 
-    List<Book> findAll();
-
-    Optional<Book> findById(long id);
-
-    void delete(Book book);
-
-    void updateTitle(Book book, String title);
+    Optional<Book> findByTitle(String title);
 }

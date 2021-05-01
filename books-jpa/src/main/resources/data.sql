@@ -23,3 +23,18 @@ insert into book_category_relation (BOOK_ID,BOOK_CATEGORY_ID) values (5,1);
 insert into book_category_relation (BOOK_ID,BOOK_CATEGORY_ID) values (6,1);
 insert into book_category_relation (BOOK_ID,BOOK_CATEGORY_ID) values (7,1);
 insert into book_category_relation (BOOK_ID,BOOK_CATEGORY_ID) values (8,1);
+
+insert into notes(book_id, comment) values (1,'good');
+insert into notes(book_id, comment) values (1,'bad');
+insert into notes(book_id, comment) values (1,'medium');
+insert into notes(book_id, comment) values (2,'good');
+insert into notes(book_id, comment) values (3,'good');
+insert into notes(book_id, comment) values (3,'bad');
+insert into notes(book_id, comment) values (4,'good');
+insert into notes(book_id, comment) values (4,'bad');
+insert into notes(book_id, comment) values (5,'good');
+insert into notes(book_id, comment) values (5,'bad');
+insert into notes(book_id, comment) values (6,'good');
+insert into notes(book_id, comment) values (6,'bad');
+insert into notes(book_id, comment) values (7,'good');
+insert into notes(book_id, comment) values (7,'bad');
