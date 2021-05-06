@@ -1,11 +1,11 @@
-package ru.otus.books.repositories.jpa;
+package ru.otus.books.repositories.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import ru.otus.books.models.Book;
+import org.springframework.context.annotation.Import;
 import ru.otus.books.models.Note;
 
 import java.util.List;
@@ -14,16 +14,15 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Import(NoteRepositoryJpaImpl.class)
 public class NoteRepositoryJpaTest {
     @Autowired
     TestEntityManager em;
     @Autowired
-    NoteRepositoryJpa noteRepositoryJpa;
+    NoteRepositoryJpaImpl noteRepositoryJpa;
 
     private final static long NOTES_COUNT = 4;
     private final static long EXPECTED_NOTE_ID = 1;
-    private final static long EXPECTED_BOOK_ID = 1;
-    private final static int EXPECTED_SIZE_OF_BOOK_NOTES = 3;
 
     @DisplayName(" корректно возвращать количество комментариев")
     @Test
@@ -70,14 +69,14 @@ public class NoteRepositoryJpaTest {
         assertThat(em.find(Note.class, noteForDelete.getNoteId())).isNull();
     }
 
-    @DisplayName(" возвращать список комментариев для книги")
+    @DisplayName(" изменять комментарий")
     @Test
-    void shouldReturnNotesForBook() {
-        Book book = em.find(Book.class, EXPECTED_BOOK_ID);
-        assertThat(noteRepositoryJpa.getAllNotesForBook(EXPECTED_BOOK_ID))
-                .isNotNull()
-                .hasSize(EXPECTED_SIZE_OF_BOOK_NOTES)
-                .usingRecursiveFieldByFieldElementComparator()
-                .isEqualTo(book.getNotes());
+    void shouldUpdateComment() {
+        Note note = new Note(0, "test note");
+        em.persist(note);
+        em.flush();
+        note.setComment("t t t t");
+        noteRepositoryJpa.save(note);
+        assertThat(em.find(Note.class, note.getNoteId()).getComment()).isEqualTo("t t t t");
     }
 }

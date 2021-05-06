@@ -1,10 +1,9 @@
 package ru.otus.books.shell;
 
-import org.aspectj.weaver.ast.Not;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.books.models.Book;
 import ru.otus.books.models.Note;
 import ru.otus.books.repositories.jpa.BookRepositoryJpa;
@@ -19,10 +18,8 @@ public class NoteShellCommands {
     private final NoteRepositoryJpa noteRepositoryJpa;
     private final BookRepositoryJpa bookRepositoryJpa;
 
-    //@Autowired
-    //BookRepositoryJpa bookRepositoryJpa;
 
-    public NoteShellCommands(NoteRepositoryJpa noteRepositoryJpa,BookRepositoryJpa bookRepositoryJpa) {
+    public NoteShellCommands(NoteRepositoryJpa noteRepositoryJpa, BookRepositoryJpa bookRepositoryJpa) {
         this.noteRepositoryJpa = noteRepositoryJpa;
         this.bookRepositoryJpa = bookRepositoryJpa;
     }
@@ -37,7 +34,7 @@ public class NoteShellCommands {
         Optional<Book> book = bookRepositoryJpa.findById(bookId);
         if (book.isPresent()) {
             System.out.printf("Комментарии к книге %S:\n", book.get().getTitle());
-            noteRepositoryJpa.getAllNotesForBook(bookId)
+            noteRepositoryJpa.findAllByBookId(bookId)
                     .forEach(n -> System.out.println(n.getComment()));
         }
     }
@@ -45,10 +42,10 @@ public class NoteShellCommands {
     @ShellMethod(key = "addNote", value = "desc")
     public void addNote(@ShellOption("comment") String comment, @ShellOption("book_id") long bookId) {
         Optional<Book> book = bookRepositoryJpa.findById(bookId);
-        if(book.isPresent()){
+        if (book.isPresent()) {
             Note note = new Note(0, comment);
             noteRepositoryJpa.save(note);
-            List<Note> notes = noteRepositoryJpa.getAllNotesForBook(bookId);
+            List<Note> notes = book.get().getNotes();
             notes.add(note);
             book.get().setNotes(notes);
             bookRepositoryJpa.save(book.get());

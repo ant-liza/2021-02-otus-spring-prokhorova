@@ -1,14 +1,21 @@
 package ru.otus.books.repositories.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import ru.otus.books.models.Note;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface NoteRepositoryJpa extends JpaRepository<Note, Long> {
+public interface NoteRepositoryJpa {
+    long count();
 
-    @Query("select n from Book b join b.notes n where b.bookId=:id")
-    List<Note> getAllNotesForBook(@Param("id") long bookId);
+    Note save(Note note);
+
+    List<Note> findAll();
+
+    Optional<Note> findById(long id);
+
+    void delete(Note note);
+
+    List<Note> findAllByBookId(long bookId);
+
 }

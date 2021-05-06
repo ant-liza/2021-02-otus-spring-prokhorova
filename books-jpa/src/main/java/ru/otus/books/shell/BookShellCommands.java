@@ -38,27 +38,28 @@ public class BookShellCommands {
     }
 
     @ShellMethod(key = "showBookWithNotes", value = " book witn notes")
-    public void showBookWithNotes(@ShellOption("title") String title) {
-        Optional<Book> book = bookRepositoryJpa.findByTitle(title);
+    public void showBookWithNotes(@ShellOption("bookId") long bookId) {
+        Optional<Book> book = bookRepositoryJpa.findById(bookId);
         if (book.isPresent()) {
-            List<Note> notes = noteRepositoryJpa.getAllNotesForBook(book.get().getBookId());
+            List<Note> notes = noteRepositoryJpa.findAllByBookId(bookId);
             notes.forEach(n -> System.out.println(n.getComment()));
         } else {
-            System.out.printf("Книга с наименованием %s не найдена\n", title);
+            System.out.printf("Книга с наименованием %s не найдена\n", bookId);
         }
     }
 
+
     @ShellMethod(key = "addBook", value = "Adding new book")
     public void addBook(@ShellOption("book title") String title,
-                        @ShellOption("category name") String bookCategoryName) {
-        Optional<BookCategory> bc = bookCategoryRepositoryJpa.findByBookCategoryName(bookCategoryName);
+                        @ShellOption("category") long bookCategoryId) {
+        Optional<BookCategory> bc = bookCategoryRepositoryJpa.findById(bookCategoryId);
         if (bc.isEmpty()) {
-            System.out.printf("Жанр %s не найден\n", bookCategoryName);
+            System.out.printf("Жанр %s не найден\n", bookCategoryId);
         } else {
             List<BookCategory> bcList = new ArrayList<>();
             bcList.add(bc.get());
             Book book = new Book(0, bcList, null, title);
-            bookRepositoryJpa.saveAndFlush(book);
+            bookRepositoryJpa.save(book);
         }
     }
 
