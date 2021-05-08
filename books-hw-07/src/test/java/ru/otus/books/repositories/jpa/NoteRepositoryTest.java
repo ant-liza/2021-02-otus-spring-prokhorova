@@ -76,7 +76,7 @@ public class NoteRepositoryTest {
     @Test
     void shouldReturnNotesForBook() {
         Book book = em.find(Book.class, EXPECTED_BOOK_ID);
-        assertThat(noteRepository.getAllNotesForBook(EXPECTED_BOOK_ID))
+        assertThat(book.getNotes())
                 .isNotNull()
                 .hasSize(EXPECTED_SIZE_OF_BOOK_NOTES)
                 .usingRecursiveFieldByFieldElementComparator()

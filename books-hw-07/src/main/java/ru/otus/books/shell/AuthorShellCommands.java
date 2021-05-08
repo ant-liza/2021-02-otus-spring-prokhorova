@@ -37,7 +37,7 @@ public class AuthorShellCommands {
                                 @ShellOption("lastName") String lastName) {
         Optional<Author> author = authorRepositoryJpa.findByFirstNameAndLastName(firstName, lastName);
         if (author.isPresent()) {
-            List<Book> books = bookRepository.getAllBooksByAuthor(author.get().getAuthorId());
+            List<Book> books = author.get().getBooks();
             if (books.isEmpty()) {
                 System.out.println("У автора отсутствуют книги");
             } else {

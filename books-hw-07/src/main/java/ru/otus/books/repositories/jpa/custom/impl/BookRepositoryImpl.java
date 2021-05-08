@@ -1,6 +1,8 @@
 package ru.otus.books.repositories.jpa.custom.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.books.exceptions.BookCategoryNotFoundException;
 import ru.otus.books.exceptions.BookNotFoundException;

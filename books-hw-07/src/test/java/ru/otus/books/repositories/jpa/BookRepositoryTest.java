@@ -37,7 +37,7 @@ public class BookRepositoryTest {
     @Test
     void shouldReturnAllBooksByAuthor() {
         Author author = em.find(Author.class, EXPECTED_AUTHOR_ID);
-        assertThat(bookRepository.getAllBooksByAuthor(EXPECTED_AUTHOR_ID))
+        assertThat(author.getBooks())
                 .isNotNull()
                 .hasSize(EXPECTED_BOOK_AUTHOR_COUNT)
                 .usingRecursiveFieldByFieldElementComparator()

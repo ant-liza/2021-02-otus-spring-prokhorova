@@ -33,7 +33,7 @@ public class NoteShellCommands {
         Optional<Book> book = bookRepository.findById(bookId);
         if (book.isPresent()) {
             System.out.printf("Комментарии к книге %S:\n", book.get().getTitle());
-            noteRepository.getAllNotesForBook(bookId)
+            book.get().getNotes()
                     .forEach(n -> System.out.println(n.getComment()));
         }
     }

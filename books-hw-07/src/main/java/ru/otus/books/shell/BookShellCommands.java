@@ -38,7 +38,7 @@ public class BookShellCommands {
     public void showBookWithNotes(@ShellOption("title") String title) {
         Optional<Book> book = bookRepository.findByTitle(title);
         if (book.isPresent()) {
-            List<Note> notes = noteRepository.getAllNotesForBook(book.get().getBookId());
+            List<Note> notes = book.get().getNotes();
             notes.forEach(n -> System.out.println(n.getComment()));
         } else {
             System.out.printf("Книга с наименованием %s не найдена\n", title);
