@@ -3,6 +3,7 @@ package ru.otus.books.shell;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.books.exceptions.AuthorNotFoundException;
 import ru.otus.books.exceptions.BookNotFoundException;
 import ru.otus.books.models.Author;
@@ -32,6 +33,7 @@ public class AuthorShellCommands {
                 forEach(a -> System.out.printf("ИД = %d, %s %s\n", a.getAuthorId(), a.getFirstName(), a.getLastName()));
     }
 
+    @Transactional(readOnly = true)
     @ShellMethod(key = "showAuthorBooks", value = "Get author with its books by first and lastname")
     public void showAuthorBooks(@ShellOption("firstName") String firstName,
                                 @ShellOption("lastName") String lastName) {

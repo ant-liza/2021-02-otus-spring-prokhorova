@@ -3,6 +3,7 @@ package ru.otus.books.shell;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.books.exceptions.BookNotFoundException;
 import ru.otus.books.models.Book;
 import ru.otus.books.models.Note;
@@ -28,6 +29,7 @@ public class NoteShellCommands {
         noteRepository.findAll().forEach(System.out::println);
     }
 
+    @Transactional(readOnly = true)
     @ShellMethod(key = "showAllNotesForBook", value = "desc")
     public void showAllNotesForBook(@ShellOption("id") long bookId) {
         Optional<Book> book = bookRepository.findById(bookId);
