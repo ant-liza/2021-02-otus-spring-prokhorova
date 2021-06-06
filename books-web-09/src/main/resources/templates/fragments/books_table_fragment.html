@@ -1,0 +1,27 @@
+<table th:fragment="books_fr" class="table table-bordered table-hover"
+       xmlns:th="http://www.w3.org/1999/xhtml">
+    <thead>
+    <tr class="text-center">
+        <th scope="col">Наименование книги</th>
+        <th scope="col">Автор</th>
+        <th scope="col">Удалить</th>
+        <th scope="col">Редактировать</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="text-center" th:each="b:${books}">
+        <td th:text="${b.getTitle()}">1</td>
+        <td th:text="${b.getAuthor().getFirstAndLastAuthorName()}">ФИО</td>
+        <td>
+            <a href="#" th:href="@{/delete_book(id=${b.getBookId()})}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span>
+            </a>
+        </td>
+        <td>
+            <a href="#" th:href="@{/edit_book(id=${b.getBookId()})}" class="btn btn-outline-secondary">
+                <span class="glyphicon glyphicon-file"></span>
+            </a>
+
+    </tr>
+    </tbody>
+</table>
