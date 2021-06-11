@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Редактировать книгу</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container" th:replace="fragments/header_fragment :: header_fr"/>
+<div class="container justify-content-center">
+    <div class="row ">
+        <div class="col">
+            <h1>Книга:</h1>
+            <form id="edit-form" action="edit_book.html" th:action="@{/edit_book(id=${book.bookId})}"
+                  th:method="post" th:object="${book}" class="form">
+                <div class="form-row">
+                    <input id="id-input" type="hidden" readonly="readonly" value="1" th:field="*{bookId}"/>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="bookTitle" class="control-label">Наименование книги</label>
+                            <input id="bookTitle" type="text" class="form-control" name="name" value="John Doe"
+                                   th:field="*{title}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="selectAuthor" class="control-label">Автор</label>
+                            <select  th:field="*{author}" class="form-control"
+                                     id="selectAuthor" name="selectAuthor">
+                                    <option th:each="a:${authors}"
+                                            th:value="${a.authorId}"
+                                            th:text="${a.firstAndLastAuthorName}">
+                                    </option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <br/>
+                        <input class="btn btn-outline-success" type="submit" value="Сохранить">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
