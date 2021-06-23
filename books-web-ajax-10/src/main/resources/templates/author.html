@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru"  xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Обязательные метатеги -->
+    <meta charset="utf-8"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <title>Библиотека</title>
+</head>
+<body>
+<div class="container" th:replace="fragments/header_fragment :: header_fr"></div>
+<div class="container" >
+<div class="row">
+    <div class="col text-center" th:object="${author}">
+        <div class="container">
+            <h1 th:text="*{firstAndLastAuthorName}"></h1>
+        </div>
+        <div class="d-none" id="authorIdDiv" th:text="*{authorId}"></div>
+    </div>
+    <br/>
+
+    <div class="row">
+        <h2 class="text-center">Список книг</h2>
+        <div class="col text-center">
+            <div class="container">
+                <div class="row">
+                    <div id="div_for_author_books" class="col" th:replace="fragments/books_table_fragment :: books_fr">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <div id="div_for_modal"></div>
+</div>
+<script th:inline="javascript" th:src="@{/js/books.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<div th:fragment="books_fr" xmlns:th="http://www.w3.org/1999/xhtml">
+    <table  class="table table-bordered table-hover">
+        <thead>
+        <tr class="text-center">
+            <th scope="col">Наименование книги</th>
+            <th scope="col">Автор</th>
+            <th scope="col">Удалить</th>
+            <th scope="col">Редактировать</th>
+        </tr>
+        </thead>
+        <tbody id="books_table_body">
+        </tbody>
+    </table>
+    <div class="container text-center">
+        <br/>
+        <button onclick="loadNewBookModalDialog()"  class="btn btn-outline-secondary btn-lg">
+            Добавить книгу
+        </button>
+
+    </div>
+
+</div>
+
