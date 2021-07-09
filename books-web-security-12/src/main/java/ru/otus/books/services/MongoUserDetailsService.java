@@ -7,18 +7,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.otus.books.model.UserMongo;
+import ru.otus.books.model.UserRoles;
 import ru.otus.books.repository.UserRepository;
-import ru.otus.books.security.roles.UserRoles;
+import ru.otus.books.repository.UserRolesRepository;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Service
 public class MongoUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final UserRolesRepository userRolesRepository;
 
-    public MongoUserDetailsService(UserRepository userRepository) {
+    public MongoUserDetailsService(UserRepository userRepository, UserRolesRepository userRolesRepository) {
         this.userRepository = userRepository;
+        this.userRolesRepository = userRolesRepository;
     }
 
     @Override
@@ -27,7 +31,9 @@ public class MongoUserDetailsService implements UserDetailsService {
         if (userMongo == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(UserRoles.USER.getRoleName()));
+        List<UserRoles> usersRoles = userRolesRepository.findByUserName(userName);
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        usersRoles.forEach(ur -> authorities.add(new SimpleGrantedAuthority(ur.getRole())));
         return new User(userMongo.getUserName(), userMongo.getPassword(), authorities);
     }
 }

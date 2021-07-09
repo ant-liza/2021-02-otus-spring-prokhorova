@@ -8,20 +8,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.otus.books.security.roles.UserRoles;
 import ru.otus.books.services.MongoUserDetailsService;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
-    MongoUserDetailsService userDetailsService;
+    private MongoUserDetailsService userDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/authors","/books","/book/**").authenticated()
+                .antMatchers("/authors", "/books").authenticated()
+                .antMatchers("/author/**").hasAuthority(UserRoles.ADMIN.getRoleName())
                 .and()
-                .formLogin()
+                .formLogin().permitAll()
                 .passwordParameter("password")
                 .failureForwardUrl("/error");
     }

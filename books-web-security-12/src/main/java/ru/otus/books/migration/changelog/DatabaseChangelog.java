@@ -71,11 +71,33 @@ public class DatabaseChangelog {
     @ChangeSet(order = "007", id = "insertUsers", author = AUTHOR)
     public void insertUsers(UserRepository userRepository) {
         UserMongo one = new UserMongo("ivanov", "$2y$10$6BQuAtBv6k2xQZXeu1Vp2.JO830/pG4SMUsD5Pe6Y6WBuPwb2J.NC");
-        UserMongo two = new UserMongo("test", "$2y$10$w5e3WDexlsWg2ypu93Wsqe06gVlTTPZqiPmTrvWJL36kB9qAh2Tqa");
+        UserMongo two = new UserMongo("test_user", "$2y$10$w5e3WDexlsWg2ypu93Wsqe06gVlTTPZqiPmTrvWJL36kB9qAh2Tqa");
         UserMongo three = new UserMongo("admin", "$2y$10$BJIZye4dEq0CMOM9urF8sOAb38zqxmDjI4G59ggDzFBQ0PbE5zAOi");
         userRepository.save(one);
         userRepository.save(two);
         userRepository.save(three);
+    }
+
+    @ChangeSet(order = "008", id = "insertRoles", author = AUTHOR)
+    public void insertRoles(RoleRepository roleRepository) {
+        Role one = new Role("TEST", "Тестовый пользователь");
+        Role two = new Role("ADMIN", "Администратор");
+        Role three = new Role("USER", "Обычный пользователь");
+        roleRepository.save(one);
+        roleRepository.save(two);
+        roleRepository.save(three);
+    }
+
+    @ChangeSet(order = "009", id = "insertUserRoles", author = AUTHOR)
+    public void insertUserRoles(UserRolesRepository roleRepository) {
+        UserRoles one = new UserRoles("ivanov", "USER");
+        UserRoles four = new UserRoles("ivanov", "ADMIN");
+        UserRoles two = new UserRoles("admin", "ADMIN");
+        UserRoles three = new UserRoles("test_user", "TEST");
+        roleRepository.save(one);
+        roleRepository.save(two);
+        roleRepository.save(three);
+        roleRepository.save(four);
     }
 
 }

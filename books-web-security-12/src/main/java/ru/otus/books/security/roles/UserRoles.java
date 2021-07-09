@@ -1,9 +1,9 @@
 package ru.otus.books.security.roles;
 
 public enum UserRoles {
-    ADMIN("admin"),
-    TEST("test"),
-    USER("user");
+    ADMIN("ADMIN"),
+    TEST("TEST"),
+    USER("USER");
     public String roleName;
 
     UserRoles(String roleName) {
