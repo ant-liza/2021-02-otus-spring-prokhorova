@@ -1,5 +1,6 @@
 package ru.otus.books.services;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +13,6 @@ import ru.otus.books.repository.UserRepository;
 import ru.otus.books.repository.UserRolesRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,7 +32,7 @@ public class MongoUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         List<UserRoles> usersRoles = userRolesRepository.findByUserName(userName);
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
         usersRoles.forEach(ur -> authorities.add(new SimpleGrantedAuthority(ur.getRole())));
         return new User(userMongo.getUserName(), userMongo.getPassword(), authorities);
     }
